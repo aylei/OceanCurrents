@@ -1,0 +1,8 @@
+**/*.dll
+**/*.exe
+*.pyc
+**.mtl
+.DS_Store
+**.bmp
+**.obj
+external/**
