@@ -18,7 +18,8 @@ Controller::Controller() {
     // inital look direction: toward -Z
     _verticalAngle = 0.0f;
     _horizontalAngle = 3.14f;
-    _projectionMatrix = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
+    //_projectionMatrix = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, 0.01f, 100.0f);
+    _projectionMatrix = glm::perspective(glm::radians(30.0f), 3.0f / 3.0f, 0.1f, 100.0f);
     _direction = glm::vec3(
         cos(_verticalAngle) * sin(_horizontalAngle),
         sin(_verticalAngle),
@@ -33,7 +34,7 @@ Controller::Controller() {
     _viewMatrix = glm::lookAt(_position, _position + _direction, _up);
     _modelMatrix = glm::mat4(1.0);
     _pressFlag = false;
-    _lastCusorPos = glm::vec2(1024.0f / 2.0f, 768.0f / 2.0f);
+    _lastCusorPos = glm::vec2(1200.0f / 2.0f, 1200.0f / 2.0f);
 }
 
 Controller * Controller::init() {

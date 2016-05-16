@@ -21,6 +21,8 @@ int main(void) {
     auto glContext = ApplicationContext::init(ConfigBuilder().windowTitle("OceanCurrents")
                                                              .fragmentShader("OceanCurrents.frag")
                                                              .vertexShader("OceanCurrents.vert")
+                                                             .windowHeight(1024)
+                                                             .windowWidth(1024)
                                                              .color(0.0, 0.0, 0.0, 0.0)
                                                              .build());
 
