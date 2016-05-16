@@ -78,6 +78,7 @@ void ApplicationContext::finalize() {
     }
     // release program
     this->_program->finalize();
+
     // delete vertexArray
     glDeleteVertexArrays(1, &this->_vertexArrayId);
 

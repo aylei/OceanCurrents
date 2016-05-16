@@ -5,6 +5,7 @@
 #include <GL/glew.h>
 #include <glfw3.h>
 #include <glm/glm.hpp>
+#include <functional>
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "utils/shaderProgram.hpp"
@@ -54,7 +55,12 @@ int main(void) {
     auto lastTime = glfwGetTime();
     auto nbFrames = 0;
 
-    Controller* controller = new Controller();
+    Controller* controller = Controller::init();
+
+    // set scroll callback
+    glfwSetScrollCallback(glContext.getWindow(), Controller::OnScroll);
+    glfwSetMouseButtonCallback(glContext.getWindow(), Controller::OnMouseButtonEvent);
+
     do {
         auto currentTime = glfwGetTime();
         nbFrames++;
@@ -64,6 +70,8 @@ int main(void) {
             lastTime += 1.0;
         }
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        controller->refreshMatrices(glContext.getWindow());
 
         glUseProgram(glContext.getShaderProgram()->getProgramId());
 
