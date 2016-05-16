@@ -65,6 +65,8 @@ private:
 
     bool _pressFlag;
 
+    bool _rightPressFlag;
+
     float _horizontalAngle;
 
     float _verticalAngle;

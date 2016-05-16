@@ -35,6 +35,7 @@ Controller::Controller() {
     _modelMatrix = glm::mat4(1.0);
     _pressFlag = false;
     _lastCusorPos = glm::vec2(1200.0f / 2.0f, 1200.0f / 2.0f);
+    _rightPressFlag = false;
 }
 
 Controller * Controller::init() {
@@ -65,6 +66,14 @@ void Controller::OnMouseButtonEvent(GLFWwindow *window, int button, int action, 
             _instance->_pressFlag = false;
         }
     }
+
+    if (button == GLFW_MOUSE_BUTTON_RIGHT) {
+        if (action == GLFW_PRESS) {
+            _instance->_rightPressFlag = true;
+        } else if (action == GLFW_RELEASE) {
+            _instance->_rightPressFlag = false;
+        }
+    }
 }
 
 void Controller::refreshMatrices(GLFWwindow *window) {
@@ -76,6 +85,13 @@ void Controller::refreshMatrices(GLFWwindow *window) {
         glm::vec3 axis(0.0f, 1.0f, 0.0f);
         if (abs(xDelta) > 1.0) {
             _modelMatrix = glm::rotate(_modelMatrix, xDelta / 100, axis);
+        }
+    }
+    if(_rightPressFlag) {
+        float yDelta = yPos - _lastCusorPos.y;
+        glm::vec3 axis(1.0f, 0.0f, 0.0f);
+        if (abs(yDelta) > 1.0) {
+            _modelMatrix = glm::rotate(_modelMatrix, yDelta / 100, axis);
         }
     }
     _lastCusorPos = glm::vec2(xPos, yPos);

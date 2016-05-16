@@ -70,6 +70,15 @@ std::vector<glm::vec2>& ObjectLoader::getUvs() {
     return this->_uvs;
 }
 
+std::vector<glm::vec2>& ObjectLoader::getReversedUvs() {
+    std::vector<glm::vec2> ret = std::vector<glm::vec2>();
+    ret.reserve(_uvs.size());
+    for (glm::vec2 uv : _uvs) {
+        ret.push_back(glm::vec2(uv.x, 1.0 - uv.y));
+    }
+    return ret;
+}
+
 std::vector<glm::vec3>& ObjectLoader::getNormals() {
     return this->_normals;
 }

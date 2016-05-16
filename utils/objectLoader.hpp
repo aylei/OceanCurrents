@@ -18,6 +18,7 @@ public:
     std::vector<glm::vec3>& getVertices();
     std::vector<glm::vec2>& getUvs();
     std::vector<glm::vec3>& getNormals();
+    std::vector<glm::vec2>& getReversedUvs();
 private:
     std::vector<unsigned short> _indices;
     std::vector<glm::vec3> _vertices;
