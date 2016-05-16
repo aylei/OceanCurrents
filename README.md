@@ -1,8 +1,5 @@
 ﻿# OceanCurrents README
 
-标签（空格分隔）： README
-
----
 ##Build
 use cmake to build it.
 
