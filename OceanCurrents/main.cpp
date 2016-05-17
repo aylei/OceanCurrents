@@ -34,18 +34,6 @@ int main(void) {
     auto textureId = glContext.getShaderProgram()->getUniform("myTextureSampler");
     auto lightId = glContext.getShaderProgram()->getUniform("LightPosition_worldspace");
 
-    // load obj
-    //std::vector<glm::vec3> vertices;
-    //std::vector<glm::vec2> uvs;
-    //std::vector<glm::vec3> normals;
-    //loadOBJ("ball_small.obj", vertices, uvs, normals);
-    //std::vector<unsigned short> indices;
-    //std::vector<vec3> indexedVertices;
-    //std::vector<vec2> indexedUvs;
-    //std::vector<vec3> indexedNormals;
-    //loadAssImp("suzanne.obj", indices, indexedVertices, indexedUvs, indexedNormals);
-    //indexVBO(vertices, uvs, normals, indices, indexedVertices, indexedUvs, indexedNormals);
-
     ObjectLoader loader = ObjectLoader::loadObj("sphere.obj");
 
     // populate buffers
@@ -87,7 +75,6 @@ int main(void) {
         glm::vec3 lightPos = glm::vec3(4, 4, 4);
         glUniform3f(lightId, lightPos.x, lightPos.y, lightPos.z);
         
-        // 每帧动画都要更新 色表
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture);
         glUniform1i(textureId, 0);
