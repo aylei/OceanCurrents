@@ -1,8 +1,8 @@
-/**
-* util that load BMP or DDS as an OpenGL texture
-*
-* author: alei  mailto:rayingecho@hotmail.com
-*/
+/*
+ * @brief util that load BMP or DDS as an OpenGL texture.
+ *
+ * @author alei  mailto:rayingecho@hotmail.com
+ */
 #include "imageLoader.hpp"
 
 GLuint ImageLoader::loadBmpAsTexture(std::string imgPath) {

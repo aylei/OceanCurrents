@@ -8,17 +8,22 @@ template<typename T>
 struct GeoVolume
 {
 	double longitudeStart_;
+
 	double longitudeStep_;
+
 	int longitudeNum_;
+
 	double latitudeStart_;
+
 	double latitudeStep_;
+
 	int latitudeNum_;
-	//double minVal_;
-	//double maxVal_;
+
 	std::vector<double> heightOfLevels_;
+
 	std::vector<T> volData_;
+
 	std::string timeStr_;
-	//float At(int x, int y, int z);
 };
 
 template<typename T>

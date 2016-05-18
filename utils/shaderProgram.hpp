@@ -1,7 +1,7 @@
-/**
- * shader program, singleton
+/*
+ * @brief shader program, singleton
  *
- * author: alei  mailto:rayingecho@hotmail.com
+ * @author alei  mailto:rayingecho@hotmail.com
  */
 #ifndef SHADER_PROGRAM_HPP
 #define SHADER_PROGRAM_HPP

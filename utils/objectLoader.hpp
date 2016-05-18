@@ -1,8 +1,8 @@
-/**
-* object load interface.
-*
-* author: alei  mailto:rayingecho@hotmail.com
-*/
+/*
+ * @brief object load interface.
+ *
+ * @author alei  mailto:rayingecho@hotmail.com
+ */
 #ifndef OBJECT_LOADER_HPP
 #define OBJECT_LOADER_HPP
 #include <GL/glew.h>

@@ -1,7 +1,7 @@
-/** 
- * util that load BMP or DDS as an OpenGL texture
+/*
+ * @brief util that load BMP or DDS as an OpenGL texture.
  *
- * author: alei  mailto:rayingecho@hotmail.com
+ * @author alei  mailto:rayingecho@hotmail.com
  */
 #ifndef IMAGE_LOADER_HPP
 #define IMAGE_LOADER_HPP

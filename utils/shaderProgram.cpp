@@ -1,3 +1,8 @@
+/*
+ * @brief shaderProgram that manage shaders, sington.
+ *
+ * @author alei  mailto:rayingecho@hotmail.com
+ */
 #include <stdio.h>
 #include <string>
 #include <vector>

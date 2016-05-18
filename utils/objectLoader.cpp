@@ -1,8 +1,8 @@
-/**
-* obejctLoader that implements object load interface using assimp
-*
-* author: alei  mailto:rayingecho@hotmail.com
-*/
+/*
+ * @brief obejctLoader that implements object load interface using assimp
+ *
+ * @author alei  mailto:rayingecho@hotmail.com
+ */
 #include "objectLoader.hpp"
 #include <vector>
 #include <stdio.h>
