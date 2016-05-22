@@ -29,6 +29,7 @@ OlicContext::OlicContext(OlicParam &olicParam, VectorField &field) {
     _resultTex = std::vector<glm::vec4>(size, BLACK);
     _isColored = std::vector<bool>(size, false);
     _offset = std::vector<float>(size, 0.0f);
+    _hitCounts = std::vector<int>(size);
     _field = &field;
 
     // init the source texture
@@ -54,6 +55,7 @@ OlicContext::OlicContext(OlicParam &olicParam, VectorField &field) {
 void OlicContext::calculateOLIC() {
     int halfWidth = _param->width / 2;
     int halfHeight = _param->width / 2;
+
     /* OLIC only allow one pixel be colored once, so if we scan points from upper to bottom, the streamline will be 
      * will be clusterd in the upper left of the canvas, which is inhomogeneous.
      * Pick random pixel is expensive, so the trade-off method is every time we select 4 points located in different
@@ -66,10 +68,11 @@ void OlicContext::calculateOLIC() {
         points.push_back(std::pair<int, int>(i % halfWidth, i / halfWidth + halfHeight));
         points.push_back(std::pair<int, int>(i % halfWidth + halfWidth, i / halfWidth + halfHeight));
 
+        // for the point that has not hitted yet, calculate steamline and convolve to get final result
         for (std::pair<int, int> point : points) {
-            if (!getIsColored(point)) {
+            if (getHitCount(point) < _param->maxHitNum) {
                 StreamLine streamLine = this->calculateStreamLine(point);
-                convolution(streamLine);
+                convolve(streamLine);
             }
         }
     }
@@ -90,7 +93,7 @@ StreamLine & OlicContext::calculateStreamLine(std::pair<int, int> point) {
 
         std::pair<int, int> nextBackward = _field->RKIntergral(currentBackward, -_param->integralStep);
         backwardPoints[i] = nextBackward;
-        currentFoward = nextBackward;
+        currentBackward = nextBackward;
     }
     
     // reverse the backward points to get the correct order
@@ -102,6 +105,8 @@ StreamLine & OlicContext::calculateStreamLine(std::pair<int, int> point) {
     return *streamLine;
 }
 
-void OlicContext::convolution(StreamLine &streamLine) {
+void OlicContext::convolve(StreamLine &streamLine) {
+    
+
     
 }

@@ -13,7 +13,9 @@
 
 struct OlicParam {
     // the forward or backward sample length in LIC, cooresponding to the notation 'L' in paper
-    float sideLength = 30;
+    int sideLength = 30;
+
+    
 
     // how many times allowed a streamline cross a pixel, 1 in OLIC
     int maxHitNum = 1;
@@ -60,6 +62,10 @@ public:
         return _isColored[point.first + _param->width * point.second];
     }
 
+    int getHitCount(std::pair<int, int> point) const {
+        return _hitCounts[point.first + _param->width * point.second];
+    }
+
     /**
      * @brief refresh and return the OLIC texture every frame
      *
@@ -77,6 +83,8 @@ private:
     std::vector<glm::vec4> _sourceTex;
     // the result texture
     std::vector<glm::vec4> _resultTex;
+    // count how many times a pixel is calculated
+    std::vector<int> _hitCounts;
     // mark the colored pixels
     std::vector<bool> _isColored;
     // store the phrase offset of each 'seed point'
@@ -93,7 +101,7 @@ private:
 
     StreamLine & calculateStreamLine(std::pair<int, int> point);
 
-    void convolution(StreamLine& streamLine);
+    void convolve(StreamLine& streamLine);
 };
 
 #endif

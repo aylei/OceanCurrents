@@ -16,8 +16,21 @@ I add texture file, obj file and thirdparty libary to .ignore due to their large
 this project is still in progress, if you have any suggestions or questions
 just post an issue or mailto:rayingecho@hotmail.com
 
+##Pseudocode
+
+###OLIC
+'''python
+# 1. init context
+size = WITDH * HEIGHT 
+dropletsTexture = generateRandDropletImg(rate=0.05, dimPixel=3, width=WIDTH, height=HEIGHT)
+relateDroplets = list(size)  		# store related droplet for each pixel
+
+# 2. pre-calculation
+for pixel in outputTextureRange:
+	
 
 
+'''
 
 
 
