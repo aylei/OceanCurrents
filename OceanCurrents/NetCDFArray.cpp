@@ -231,9 +231,9 @@ bool NetCDFArray::getGeoArrayData(GeoArray<float>& geoArray, std::string variabl
 		std::cout << "[GEOARRAY] netcdf format read error during querying the variable's metadata: " << nc_strerror(result) << std::endl;
 		return false;
 	}
-	size_t* index_dim_start = new unsigned int [count_dims];
-	size_t* index_dim_count = new unsigned int [count_dims];
-	memset(index_dim_start, 0, count_dims * sizeof(int));
+	size_t* index_dim_start = new size_t [count_dims];
+	size_t* index_dim_count = new size_t [count_dims];
+	memset(index_dim_start, 0, count_dims * sizeof(size_t));
 
 	for(int i = 0; i < count_dims; ++i)
 	{
@@ -560,9 +560,9 @@ bool NetCDFArray::getGeoVolumeData(GeoVolume<float>& gv, std::string type_str, s
 				std::cout << "[GEOARRAY] netcdf format read error during querying the variable's metadata: " << nc_strerror(result) << std::endl;
 				return false;
 			}
-			size_t* index_dim_start = new unsigned int [count_dims];
-			size_t* index_dim_count = new unsigned int [count_dims];
-			memset(index_dim_start, 0, count_dims * sizeof(int));
+			size_t* index_dim_start = new size_t [count_dims];
+			size_t* index_dim_count = new size_t [count_dims];
+			memset(index_dim_start, 0, count_dims * sizeof(size_t));
 
 			for(int i = 0; i < count_dims; ++i)
 			{
@@ -878,9 +878,9 @@ bool NetCDFArray::readFromFile(const std::string& variable_name, size_t level)
 //		|| strcmp(name, "t") == 0)
 //		count_dims = 1;
 //#endif
-	size_t* index_dim_start = new unsigned int [count_dims];
-	size_t* index_dim_count = new unsigned int [count_dims];
-	memset(index_dim_start, 0, count_dims * sizeof(int));
+	size_t* index_dim_start = new size_t [count_dims];
+	size_t* index_dim_count = new size_t [count_dims];
+	memset(index_dim_start, 0, count_dims * sizeof(size_t));
 
 	for(int i = 0; i < count_dims; ++i)
 	{

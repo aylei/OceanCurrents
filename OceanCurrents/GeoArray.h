@@ -262,7 +262,6 @@ bool isSameGeoInfo(const GeoArray<T>& ga0, const GeoArray<T>& ga1) {
 
 template<typename vecT, typename T>
 bool getGeoArray_UV(GeoArray<vecT>& gauv, const GeoArray<T>& gaU, const GeoArray<T>& gaV) {
-    static_assert(std::is_arithmetic<T>::value);
     if( !isSameGeoInfo(gaU, gaV)
         || gaU.getStatus() != GeoArray<T>::ARRAY_STATUS_SUCCEED
         || gaV.getStatus() != GeoArray<T>::ARRAY_STATUS_SUCCEED ) {

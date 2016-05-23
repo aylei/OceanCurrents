@@ -1,17 +1,8 @@
 #include "GeoVolume.h"
-#include "qdir.h"
 #include "utils.h"
 #include "GeoArray.h"
 #include <algorithm>
 #include <tuple>
-
-static bool cmp(const QFileInfo &a, const QFileInfo &b)
-{
-	if(a.fileName().size() != b.fileName().size())
-		return a.fileName().size() < b.fileName().size();
-	else
-		return a.fileName() < b.fileName();
-}
 
 std::vector<float> GetNormalizedVolumeData( const GeoVolume<float>& gv )
 {

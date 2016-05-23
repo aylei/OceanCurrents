@@ -28,6 +28,7 @@ include_directories(
 	external/glm-0.9.7.1/
 	external/glew-1.13.0/include/
 	external/assimp-3.0.1270/include/
+	external/netCDF/include/
 	.
 )
 
@@ -52,6 +53,16 @@ add_executable(OceanCurrents
 	OceanCurrents/ApplicationContext.cpp
 	OceanCurrents/controller.hpp
 	OceanCurrents/controller.cpp
+	OceanCurrents/GeoArray.h
+	OceanCurrents/GeoVolume.h
+	OceanCurrents/GeoVolume.cpp
+	OceanCurrents/NetCDFArray.cpp
+	OceanCurrents/NetCDFArray.h
+	OceanCurrents/olic.hpp
+	OceanCurrents/olic.cpp
+	OceanCurrents/utils.h
+	OceanCurrents/vectorField.hpp
+
 
 	utils/objectLoader.cpp
 	utils/objectLoader.hpp
@@ -67,6 +78,7 @@ add_executable(OceanCurrents
 target_link_libraries(OceanCurrents
 	${ALL_LIBS}
 	assimp
+	netCDF
 )
 # Xcode and Visual working directories
 set_target_properties(OceanCurrents PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/OceanCurrents/")

@@ -9,13 +9,14 @@
 #include <stdlib.h>
 #include <vector>
 #include <glm/glm.hpp>
-#include "vectorFiled.hpp"
+#include "vectorField.hpp"
 
 struct OlicParam {
     // the forward or backward sample length in LIC, cooresponding to the notation 'L' in paper
     int sideLength = 30;
 
-    
+    // inspired by fastLIC, we calculate extra 2 * pandPointNum points' convolution for each streamline, to acclerate the algo 
+    int pandPointNum = 10;
 
     // how many times allowed a streamline cross a pixel, 1 in OLIC
     int maxHitNum = 1;
