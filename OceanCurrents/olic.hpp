@@ -16,7 +16,7 @@ struct OlicParam {
     int sideLength = 30;
 
     // inspired by fastLIC, we calculate extra 2 * pandPointNum points' convolution for each streamline, to acclerate the algo 
-    int pandPointNum = 10;
+    int pandPointNum = 15;
 
     // how many times allowed a streamline cross a pixel, 1 in OLIC
     int maxHitNum = 1;
@@ -41,6 +41,17 @@ struct StreamLine {
     int length = 0;
 };
 
+struct Droplet {
+    int xPos = 0;
+    int yPos = 0;
+    int offset = 0;
+    Droplet(int x, int y, int offset) {
+        xPos = x;
+        yPos = y;
+        this->offset = offset;
+    }
+};
+
 /**
  * singleton, include Olic algorithm related datas and methods
  */
@@ -55,12 +66,13 @@ public:
     }
 
     // get the texel of the source texture in the given point
-    glm::vec4 getSourceTexel(std::pair<int, int> point) const {
+    float getSourceTexel(std::pair<int, int> point) const {
         return _sourceTex[point.first + _param->width * point.second];
     }
 
-    bool getIsColored(std::pair<int, int> point) const {
-        return _isColored[point.first + _param->width * point.second];
+    Droplet getRelateDroplet(std::pair<int, int> point) const {
+        int index =  _relateDroplets[point.first + _param->width * point.second];
+        return _droplets[index];
     }
 
     int getHitCount(std::pair<int, int> point) const {
@@ -81,22 +93,23 @@ private:
     // olic algo parameters instance
     OlicParam* _param;
     // the low frequency texture map
-    std::vector<glm::vec4> _sourceTex;
+    std::vector<float> _sourceTex;
     // the result texture
-    std::vector<glm::vec4> _resultTex;
+    std::vector<float> _resultTex;
     // count how many times a pixel is calculated
     std::vector<int> _hitCounts;
-    // mark the colored pixels
-    std::vector<bool> _isColored;
-    // store the phrase offset of each 'seed point'
-    std::vector<float> _offset;
+    // record all droplets
+    std::vector<Droplet> _droplets;
+    // record the index of responsibel droplet for each piexl
+    std::vector<int> _relateDroplets;
     // cache for the cycle animation textures
     std::vector<std::vector<glm::vec4>> _texCache;
-
     // the vector field instance
     VectorField* _field;
 
     explicit OlicContext(OlicParam& olicParam, VectorField& field);
+
+    void buildSourceTexture(OlicParam& olicParam);
 
     void calculateOLIC();
 

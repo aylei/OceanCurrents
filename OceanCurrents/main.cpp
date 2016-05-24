@@ -13,10 +13,58 @@
 #include "utils/objectLoader.hpp"
 #include "controller.hpp"
 #include "applicationContext.hpp"
+#include "NetCDFArray.h"
 
 
 using namespace glm;
 
+void testNetCDF() {
+    NetCDFArray nca("2015031500_ocean.nc");
+
+    /*get attributes*/
+    std::vector<std::string> var_lists = nca.getVariableList();
+    std::cout << "the attributes are:" << std::endl;
+    for (std::vector<std::string>::iterator it = var_lists.begin();
+    it != var_lists.end(); ++it) {
+        std::cout << *it << "   ";
+        if (it + 1 == var_lists.end())
+            std::cout << std::endl;
+    }
+
+    /*get altitudes*/
+    std::vector<levels_t> level_lists = nca.getLevelsList();
+    std::cout << "the altitudes are:" << std::endl;
+    for (std::vector<levels_t>::iterator it = level_lists.begin();
+    it != level_lists.end(); ++it) {
+        std::cout << *it << "   ";
+        if (it + 1 == level_lists.end())
+            std::cout << std::endl;
+    }
+
+    {
+        /*select a time frame tick. 0 - 23*/
+        size_t tick = 1;
+
+        /*select an attribute.*/
+        std::string attribute_str = var_lists[6];
+        std::cout << "the attribute " << attribute_str << " has been selected" << std::endl;
+
+        /*select an alititude index*/
+        size_t level_index = 4;
+
+        /*give a GeoArray instance to save the result*/
+        GeoArray<float> U;
+
+        /*read geo grid data from the netcdf file*/
+        nca.getGeoArrayData(U, attribute_str, tick, level_index);
+
+        std::cout << "max value = " << U.maxVal_ << std::endl << "min value = " << U.minVal_ << std::endl;
+        std::cout << "latitude count = " << U.latitude_num_ << "; from " << U.latitude_start_ << " to " << U.latitude_end_ << std::endl;
+        std::cout << "longitude count = " << U.longitude_num_ << "; from " << U.longitude_start_ << " to " << U.longitude_end_ << std::endl;
+        std::cout << "data[1][300] = " << U(1, 300) << "; namely, the value of attribute U at (latitude[1] = " << U.latitude_start_ + 1 * U.latitude_interval_
+            << ", longitude[300] = " << U.longitude_start_ + 300 * U.longitude_interval_ << ")" << std::endl;
+    }
+}
 int main(void) {
     auto glContext = ApplicationContext::init(ConfigBuilder().windowTitle("OceanCurrents")
                                                              .fragmentShader("OceanCurrents.frag")
@@ -50,6 +98,9 @@ int main(void) {
     // set scroll callback
     glfwSetScrollCallback(glContext.getWindow(), Controller::OnScroll);
     glfwSetMouseButtonCallback(glContext.getWindow(), Controller::OnMouseButtonEvent);
+
+    testNetCDF();
+    
 
     do {
         auto currentTime = glfwGetTime();
@@ -138,6 +189,8 @@ int main(void) {
     glContext.finalize();
     return 0;
 }
+
+
 
 
 

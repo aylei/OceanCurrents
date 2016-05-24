@@ -6,10 +6,6 @@
 #include "olic.hpp"
 #include <algorithm>
 
-static const glm::vec4 BLACK = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-
-static const glm::vec4 WHITE = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-
 OlicContext* OlicContext::_instance = nullptr;
 
 OlicContext & OlicContext::init(OlicParam &olicParam, VectorField &field) {
@@ -21,17 +17,39 @@ OlicContext & OlicContext::init(OlicParam &olicParam, VectorField &field) {
     return *_instance;
 }
 
+/**
+ * @brief constructor for factory method to preduce the singlton. 
+ * @param olicParam {@link OlicParam} instance holding vita algorithm parameters
+ * @param field {@link VectorField} instance providing friendly interface to interact with underlying vector field 
+ * 
+ * this constructor will init the context and its containers, additionally, will generate the source texutre
+ */
 OlicContext::OlicContext(OlicParam &olicParam, VectorField &field) {
     _param = &olicParam;
     auto size = olicParam.width * olicParam.height;
     // initial: black
-    _sourceTex = std::vector<glm::vec4>(size, BLACK);
-    _resultTex = std::vector<glm::vec4>(size, BLACK);
-    _isColored = std::vector<bool>(size, false);
-    _offset = std::vector<float>(size, 0.0f);
-    _hitCounts = std::vector<int>(size);
+    _sourceTex = std::vector<float>(size, 0.0f);
+    _resultTex = std::vector<float>(size, 0.0f);
+    _hitCounts = std::vector<int>(size, 0);
+    _relateDroplets = std::vector<int>(size, -1);
     _field = &field;
+    buildSourceTexture(olicParam);
+}
 
+/**
+ * @brief build the source sparse droplets texture.
+ * 
+ * according to anothre paper (Fast Oriented Line Integral Convolution for Vector Field Visualization via
+ * the Internet), the droplets placement is very important: the purpose is cover as much area of the final
+ * texture as possible while decreasing the overlapping of streamlines. In the other hand, the algorithm
+ * have to be efficient enough. So its a challenge to dig out a perfect algorithm to generate the source
+ * texture.
+ *
+ * but util now, a persudo-random generator method is still adopted. 
+ * TODO: improve the source texture generating strategy.
+ */
+void OlicContext::buildSourceTexture(OlicParam& olicParam) {
+    auto size = olicParam.width * olicParam.height;
     // init the source texture
     for (auto i = 0; i < size; i++) {
         if (rand() > 1.0 - olicParam.dropletRate) {
@@ -44,7 +62,7 @@ OlicContext::OlicContext(OlicParam &olicParam, VectorField &field) {
                 // set this pixel and the around dim pixels to WHITE  
                 for (auto k = 0; k < olicParam.dimPixel; ++k) {
                     for (auto j = 0; j < olicParam.dimPixel; ++j) {
-                        _sourceTex[(xCoords + k) + (yCoords + j) * olicParam.width] = WHITE;
+                        _sourceTex[(xCoords + k) + (yCoords + j) * olicParam.width] = 1.0f;
                     }
                 }
             }

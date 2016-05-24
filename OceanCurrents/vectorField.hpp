@@ -24,6 +24,13 @@ public:
     glm::vec2 getVector(std::pair<int, int> point);
 };
 
+inline std::pair<int, int> VectorField::RKIntergral(std::pair<int, int> originPoint, float step) {
+    return std::pair<int, int>(1, 1);
+}
+
+inline glm::vec2 VectorField::getVector(std::pair<int, int> point) {
+    return glm::vec2(1.0f, 1.0f);
+}
 #endif
 
 
