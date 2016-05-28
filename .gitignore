@@ -7,3 +7,7 @@
 **.obj
 external/**
 **.nc
+.idea
+node_modules
+target
+*.iml

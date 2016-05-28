@@ -1,0 +1,13 @@
+prefix=C:/Program Files/netCDF
+exec_prefix=C:/Program Files/netCDF
+libdir=C:/Program Files/netCDF/lib
+includedir=C:/Program Files/netCDF/include
+ccompiler=C:/Program Files (x86)/Microsoft Visual Studio 12.0/VC/bin/x86_amd64/cl.exe
+
+Name: netCDF
+Description: NetCDF Client Library for C
+URL: http://www.unidata.ucar.edu/netcdf
+Version: 4.4.0
+Libs: -L${libdir} -lnetcdf -lhdf5 -lhdf5_hl -lzlib
+Cflags: -I${includedir}
+
