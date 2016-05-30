@@ -5,7 +5,7 @@ var globes = function() {
     "use strict";
 
     function currentPosition() {
-        var λ = µ.floorMod(new Date().getTimezoneOffset() / 4, 360);
+        var λ = _mine.floorMod(new Date().getTimezoneOffset() / 4, 360);
         return [λ, 0];
     }
 
@@ -26,10 +26,6 @@ var globes = function() {
     function standardGlobe() {
         return {
             projection: null,
-
-            newProjection: function(view) {
-                throw new Error("method must be overridden");
-            },
 
             bounds: function(view) {
                 return clampedBounds(d3.geo.path().projection(this.projection).bounds({type: "Sphere"}), view);
@@ -53,13 +49,13 @@ var globes = function() {
 
             orientation: function(o, view) {
                 var projection = this.projection, rotate = projection.rotate();
-                if (µ.isValue(o)) {
+                if (_mine.isValue(o)) {
                     var parts = o.split(","), λ = +parts[0], φ = +parts[1], scale = +parts[2];
                     var extent = this.scaleExtent();
                     projection.rotate(_.isFinite(λ) && _.isFinite(φ) ?
                         [-λ, -φ, rotate[2]] :
                         this.newProjection(view).rotate());
-                    projection.scale(_.isFinite(scale) ? µ.clamp(scale, extent[0], extent[1]) : this.fit(view));
+                    projection.scale(_.isFinite(scale) ? _mine.clamp(scale, extent[0], extent[1]) : this.fit(view));
                     projection.translate(this.center(view));
                     return this;
                 }
@@ -149,24 +145,12 @@ var globes = function() {
                 foregroundSvg.append("use")
                     .attr("xlink:href", "#sphere")
                     .attr("class", "foreground-sphere");
-            },
-            locate: function(coord) {
-                return [-coord[0], -coord[1], this.projection.rotate()[2]];
-            }
-        });
-    }
-
-    function atlantis() {
-        return newGlobe({
-            newProjection: function() {
-                return d3.geo.mollweide().rotate([30, -45, 90]).precision(0.1);
             }
         });
     }
 
     return d3.map({
-        orthographic: orthographic,
-        atlantis: atlantis
+        orthographic: orthographic
     });
 
 }();

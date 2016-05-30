@@ -6,11 +6,6 @@
     font-family: "San-serif", "Calibri";
 }
 
-
-/**************************************************************************************************
- * Styling Reset
- **************************************************************************************************/
-
 html {
     background-image:url("/universe.jpg");
     background-repeat: no-repeat;
@@ -33,33 +28,6 @@ html, body, div, span, h1, h2, h3, h4, h5, h6, p, a, svg, canvas {
     }
 }
 
-/**************************************************************************************************
- * Page Styling
- **************************************************************************************************/
-
-a, .text-button {
-    color: #888888;
-}
-
-.text-button.highlighted {
-    color: #e2b42e;
-}
-
-.text-button.disabled {
-    color: #444444;
-}
-
-a:hover, a:focus, .no-touch .text-button:hover, .no-touch .text-button:focus, .text-button:active {
-    color: #ffffff;
-    cursor: pointer;
-    transition: color 125ms ease-in;
-    -webkit-transition: color 125ms ease-in;
-}
-
-p.invisible, span.invisible, #sponsor.invisible {
-    display: none;
-}
-
 svg {
     overflow: hidden;
 }
@@ -67,13 +35,6 @@ svg {
 body {
     color: #eeeeee;
     background: #000005;
-}
-
-#warn {
-    font-size: 2.0em;
-    position: absolute;
-    top: 10%;
-    left: 2%;
 }
 
 #display {
@@ -90,57 +51,11 @@ body {
     position: absolute;
     bottom: 3%;
     left: 2%;
-    pointer-events: none;  /* This div is just a container--do not let it interfere with operation of the map. */
+    pointer-events: none;
 }
 
 #earth {
     font-size: 2.4rem;
-}
-
-#status, #location, #menu {
-    font-size: 1.75rem;
-}
-
-#status, #location, #earth {
-    background-color: rgba(0, 0, 5, 0.6);
-    border-radius: 0.5rem/0.5rem;
-    display: table;
-    margin-top: 1rem;
-    padding: 0 1rem 0 1rem;
-    pointer-events: all;
-}
-
-#menu {
-    background-color: rgba(0, 0, 0, 0);
-    border-radius: 0.5rem/0.5rem;
-    overflow: hidden;
-    pointer-events: all;
-
-    margin-top: 1rem;
-    padding: 0.5rem 1rem 0.5rem 1rem;
-    opacity: 1;
-    max-height: 34rem;
-    transition: opacity 250ms ease, max-height 250ms ease, margin-top 250ms ease;
-    -webkit-transition: opacity 250ms ease, max-height 250ms ease, margin-top 250ms ease;
-}
-
-#progress {
-    padding-left: 1rem;
-}
-
-#nav-now {
-    padding-right: 1rem;
-}
-
-#nav-backward, #nav-backward-more, #nav-forward, #nav-forward-more, #option-show-grid {
-    padding-left: 1rem;
-    padding-right: 1rem;
-}
-
-#lang {
-    font-size: 1.25rem;
-    float: right;
-    padding-top: 0.5rem;
 }
 
 .sup {
@@ -155,20 +70,10 @@ body {
     font-size: 0.6em;
 }
 
-/**************************************************************************************************
- * SVG Element Styling
- **************************************************************************************************/
-
 .coastline{
     stroke: #ae6e28;
     stroke-width: 2.0;
     fill: #ae6e28;
-}
-
-.lakes{
-    stroke: #59d1cb;
-    stroke-width: 1.0;
-    fill: #59d1cb;
 }
 
 .background-sphere {

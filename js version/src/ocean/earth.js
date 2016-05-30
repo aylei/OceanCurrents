@@ -6,7 +6,6 @@
 
     var SECOND = 1000;
     var MINUTE = 60 * SECOND;
-    var HOUR = 60 * MINUTE;
     var MAX_TASK_TIME = 100;
     var MIN_SLEEP_TIME = 25;
     var MIN_MOVE = 4;
@@ -15,21 +14,21 @@
     var OVERLAY_ALPHA = Math.floor(0.5*255);
     var INTENSITY_SCALE_STEP = 10;
     var MAX_PARTICLE_AGE = 100;
-    var PARTICLE_LINE_WIDTH = 2;
-    var PARTICLE_MULTIPLIER = 6;
+    var PARTICLE_LINE_WIDTH = 4;
+    var PARTICLE_MULTIPLIER = 2;
     var FRAME_RATE = 25;
 
     var NULL_VECTOR = [NaN, NaN, null];
     var HOLE_VECTOR = [NaN, NaN, null];
 
-    var view = µ.view();
-    var log = µ.log();
+    var view = _mine.view();
+    var log = _mine.log();
 
     function newAgent() {
-        return µ.newAgent();
+        return _mine.newAgent();
     }
 
-    var configuration = µ.buildConfiguration(globes, products.overlayTypes);
+    var configuration = _mine.buildConfiguration(globes, field.overlayTypes);
     var inputController = buildInputController();
     var meshAgent = newAgent();
     var globeAgent = newAgent();
@@ -59,7 +58,7 @@
                 var currentMouse = d3.mouse(this), currentScale = d3.event.scale;
                 op = op || newOp(currentMouse, 1);
                 if (op.type === "click" || op.type === "spurious") {
-                    var distanceMoved = µ.distance(currentMouse, op.startMouse);
+                    var distanceMoved = _mine.distance(currentMouse, op.startMouse);
                     if (currentScale === op.startScale && distanceMoved < MIN_MOVE) {
                         op.type = distanceMoved > 0 ? "click" : "spurious";
                         return;
@@ -120,7 +119,7 @@
 
     function buildMesh(resource) {
         var cancel = this.cancel;
-        return µ.loadJson(resource).then(function(topo) {
+        return _mine.loadJson(resource).then(function(topo) {
             if (cancel.requested) return null;
             log.time("building meshes");
             var o = topo.objects;
@@ -146,7 +145,7 @@
         log.time("build grids");
         var cancel = this.cancel;
         downloadsInProgress++;
-        var loaded = when.map(products.productsFor(configuration.attributes), function(product) {
+        var loaded = when.map(field.productsFor(configuration.attributes), function(product) {
             return product.load(cancel);
         });
         return when.all(loaded).then(function(products) {
@@ -163,7 +162,7 @@
         }
         var next = gridAgent.value().primaryGrid.navigate(step);
         if (next) {
-            configuration.save(µ.dateToConfig(next));
+            configuration.save(_mine.dateToConfig(next));
         }
     }
 
@@ -172,17 +171,14 @@
 
         log.time("rendering map");
 
-        // UNDONE: better way to do the following?
         var dispatch = _.clone(Backbone.Events);
         if (rendererAgent._previous) {
             rendererAgent._previous.stopListening();
         }
         rendererAgent._previous = dispatch;
 
-        // First clear map and foreground svg contents.
-        µ.removeChildren(d3.select("#map").node());
-        µ.removeChildren(d3.select("#foreground").node());
-        // Create new map svg elements.
+        _mine.removeChildren(d3.select("#map").node());
+        _mine.removeChildren(d3.select("#foreground").node());
         globe.defineMap(d3.select("#map"), d3.select("#foreground"));
 
         var path = d3.geo.path().projection(globe.projection).pointRadius(1);
@@ -198,7 +194,6 @@
             doDraw_throttled = _.throttle(doDraw, REDRAW_WAIT, {leading: false});
         }
 
-        // Attach to map rendering events on input controller.
         dispatch.listenTo(
             inputController, {
                 moveStart: function() {
@@ -235,13 +230,13 @@
         context.fill();
 
         var imageData = context.getImageData(0, 0, width, height);
-        var data = imageData.data;  // layout: [r, g, b, a, r, g, b, a, ...]
+        var data = imageData.data;
         log.timeEnd("render mask");
         return {
             imageData: imageData,
             isVisible: function(x, y) {
                 var i = (y * width + x) * 4;
-                return data[i + 3] > 0;  // non-zero alpha means pixel is visible
+                return data[i + 3] > 0;
             },
             set: function(x, y, rgba) {
                 var i = (y * width + x) * 4;
@@ -292,7 +287,7 @@
     function distort(projection, λ, φ, x, y, scale, vector) {
         var u = vector[0] * scale;
         var v = vector[1] * scale;
-        var d = µ.distortion(projection, λ, φ, x, y);
+        var d = _mine.distortion(projection, λ, φ, x, y);
 
         vector[0] = d[0] * u + d[2] * v;
         vector[1] = d[1] * u + d[3] * v;
@@ -341,7 +336,7 @@
                             if (hasDistinctOverlay) {
                                 scalar = overlayInterpolate(λ, φ);
                             }
-                            if (µ.isValue(scalar)) {
+                            if (_mine.isValue(scalar)) {
                                 color = scale.gradient(scalar, OVERLAY_ALPHA);
                             }
                         }
@@ -383,7 +378,7 @@
 
         var cancel = this.cancel;
         var bounds = globe.bounds(view);
-        var colorStyles = µ.windIntensityColorScale(INTENSITY_SCALE_STEP, grids.primaryGrid.particles.maxIntensity);
+        var colorStyles = _mine.windIntensityColorScale(INTENSITY_SCALE_STEP, grids.primaryGrid.particles.maxIntensity);
         var buckets = colorStyles.map(function() { return []; });
         var particleCount = Math.round(bounds.width * PARTICLE_MULTIPLIER);
         var fadeFillStyle = "rgba(0, 0, 0, 0.97)";
@@ -464,8 +459,8 @@
 
         var ctx = d3.select("#overlay").node().getContext("2d"), grid = (gridAgent.value() || {}).overlayGrid;
 
-        µ.clearCanvas(d3.select("#overlay").node());
-        µ.clearCanvas(d3.select("#scale").node());
+        _mine.clearCanvas(d3.select("#overlay").node());
+        _mine.clearCanvas(d3.select("#scale").node());
         if (overlayType) {
             if (overlayType !== "off") {
                 ctx.putImageData(field.overlay, 0, 0);
@@ -477,26 +472,10 @@
     function stopCurrentAnimation(alsoClearCanvas) {
         animatorAgent.cancel();
         if (alsoClearCanvas) {
-            µ.clearCanvas(d3.select("#animation").node());
+            _mine.clearCanvas(d3.select("#animation").node());
         }
     }
 
-    function bindButtonToConfiguration(elementId, newAttr, keys) {
-        keys = keys || _.keys(newAttr);
-        d3.select(elementId).on("click", function() {
-            if (d3.select(elementId).classed("disabled")) return;
-            configuration.save(newAttr);
-        });
-        configuration.on("change", function(model) {
-            var attr = model.attributes;
-            d3.select(elementId).classed("highlighted", _.isEqual(_.pick(attr, keys), _.pick(newAttr, keys)));
-        });
-    }
-
-    /**
-     * Registers all event handlers to bind components and page elements together. There must be a cleaner
-     * way to accomplish this...
-     */
     function init() {
 
         d3.selectAll(".fill-screen").attr("width", view.width).attr("height", view.height);
@@ -505,7 +484,6 @@
             .attr("width", (d3.select("#menu").node().offsetWidth - label.offsetWidth) * 0.97)
             .attr("height", label.offsetHeight * 0.8);
 
-        // Bind configuration to URL bar changes.
         d3.select(window).on("hashchange", function() {
             log.debug("hashchange");
             configuration.fetch({trigger: "hashchange"});
@@ -522,20 +500,16 @@
         gridAgent.listenTo(configuration, "change", function() {
             var changed = _.keys(configuration.changedAttributes()), rebuildRequired = false;
 
-            // Build a new grid if any layer-related attributes have changed.
             if (_.intersection(changed, ["date", "hour", "param", "surface", "level"]).length > 0) {
                 rebuildRequired = true;
             }
-            // Build a new grid if the new overlay type is different from the current one.
             var overlayType = configuration.get("overlayType") || "default";
             if (_.indexOf(changed, "overlayType") >= 0 && overlayType !== "off") {
                 var grids = (gridAgent.value() || {}), primary = grids.primaryGrid, overlay = grids.overlayGrid;
                 if (!overlay) {
-                    // Do a rebuild if we have no overlay grid.
                     rebuildRequired = true;
                 }
                 else if (overlay.type !== overlayType && !(overlayType === "default" && primary === overlay)) {
-                    // Do a rebuild if the types are different.
                     rebuildRequired = true;
                 }
             }
@@ -577,21 +551,18 @@
         });
         overlayAgent.listenTo(configuration, "change", function() {
             var changed = _.keys(configuration.changedAttributes())
-            // if only overlay relevant flags have changed...
             if (_.intersection(changed, ["overlayType", "showGridPoints"]).length > 0) {
                 overlayAgent.submit(drawOverlay, fieldAgent.value(), configuration.get("overlayType"));
             }
         });
 
-        // When touch device changes between portrait and landscape, rebuild globe using the new view size.
         d3.select(window).on("orientationchange", function() {
-            view = µ.view();
+            view = _mine.view();
             globeAgent.submit(buildGlobe, configuration.get("projection"));
         });
     }
 
     function start() {
-        // Everything is now set up, so load configuration from the hash fragment and kick off change events.
         configuration.fetch();
     }
 
