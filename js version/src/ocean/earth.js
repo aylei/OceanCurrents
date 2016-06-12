@@ -4,8 +4,6 @@
 (function() {
     "use strict";
 
-    var SECOND = 1000;
-    var MINUTE = 60 * SECOND;
     var MAX_TASK_TIME = 100;
     var MIN_SLEEP_TIME = 25;
     var MIN_MOVE = 4;
@@ -14,12 +12,11 @@
     var OVERLAY_ALPHA = Math.floor(0.5*255);
     var INTENSITY_SCALE_STEP = 10;
     var MAX_PARTICLE_AGE = 100;
-    var PARTICLE_LINE_WIDTH = 4;
-    var PARTICLE_MULTIPLIER = 2;
+    var PARTICLE_LINE_WIDTH = 2;
+    var PARTICLE_MULTIPLIER = 7;
     var FRAME_RATE = 25;
 
     var NULL_VECTOR = [NaN, NaN, null];
-    var HOLE_VECTOR = [NaN, NaN, null];
 
     var view = _mine.view();
     var log = _mine.log();
@@ -341,7 +338,7 @@
                             }
                         }
                     }
-                    column[y] = vector || HOLE_VECTOR;
+                    column[y] = vector || NULL_VECTOR;
                     mask.set(x, y, color);
                 }
             }
